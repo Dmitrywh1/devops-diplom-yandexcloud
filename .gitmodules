@@ -1,3 +1,12 @@
 [submodule "samplefe"]
 	path = samplefe
 	url = https://github.com/Dmitrywh1/samplefe.git
+[submodule "k8s-prepare"]
+	path = k8s-prepare
+	url = https://github.com/Dmitrywh1/k8s-prepare.git
+[submodule "kubespray"]
+	path = kubespray
+	url = https://github.com/Dmitrywh1/kubespray.git
+[submodule "terraform"]
+	path = terraform
+	url = https://github.com/Dmitrywh1/terraform.git
