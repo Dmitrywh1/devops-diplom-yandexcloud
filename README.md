@@ -58,7 +58,10 @@
 Ожидаемые результаты:
 
 1. Terraform сконфигурирован и создание инфраструктуры посредством Terraform возможно без дополнительных ручных действий.
+
 2. Полученная конфигурация инфраструктуры является предварительной, поэтому в ходе дальнейшего выполнения задания возможны изменения.
+![image](https://github.com/user-attachments/assets/ed4baf43-3217-411b-944c-423273afcdbe)
+
 
 ---
 ### Создание Kubernetes кластера
@@ -74,6 +77,11 @@
 
 [Kubespray](https://github.com/Dmitrywh1/kubespray/tree/3105a3f65f0b05be9fd94ce04799aebc1da417be)
 
+[.gitlab-ci.yml](https://github.com/Dmitrywh1/kubespray/blob/main/.gitlab-ci.yml)
+
+![image](https://github.com/user-attachments/assets/b9831705-6ba3-424a-986f-2e322a98133d)
+
+
 2. Альтернативный вариант: воспользуйтесь сервисом [Yandex Managed Service for Kubernetes](https://cloud.yandex.ru/services/managed-kubernetes)  
   а. С помощью terraform resource для [kubernetes](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/kubernetes_cluster) создать **региональный** мастер kubernetes с размещением нод в разных 3 подсетях      
   б. С помощью terraform resource для [kubernetes node group](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/kubernetes_node_group)
@@ -83,6 +91,8 @@
 1. Работоспособный Kubernetes кластер.
 2. В файле `~/.kube/config` находятся данные для доступа к кластеру.
 3. Команда `kubectl get pods --all-namespaces` отрабатывает без ошибок.
+   ![image](https://github.com/user-attachments/assets/cdf01edc-e770-49a6-89b7-476e1995ce17)
+
 
 ---
 ### Создание тестового приложения
@@ -104,6 +114,7 @@
 [samplefe](https://github.com/Dmitrywh1/samplefe/tree/c22907c72ee4c0f0c5036eb0510468ebbfba8c94)
 
 2. Регистри с собранным docker image. В качестве регистри может быть DockerHub или [Yandex Container Registry](https://cloud.yandex.ru/services/container-registry), созданный также с помощью terraform.
+![image](https://github.com/user-attachments/assets/f1338874-b9cf-40f0-8b10-21f5846d3160)
 
 ---
 ### Подготовка cистемы мониторинга и деплой приложения
@@ -120,11 +131,28 @@
 
 2. Если на первом этапе вы не воспользовались [Terraform Cloud](https://app.terraform.io/), то задеплойте и настройте в кластере [atlantis](https://www.runatlantis.io/) для отслеживания изменений инфраструктуры. Альтернативный вариант 3 задания: вместо Terraform Cloud или atlantis настройте на автоматический запуск и применение конфигурации terraform из вашего git-репозитория в выбранной вами CI-CD системе при любом комите в main ветку. Предоставьте скриншоты работы пайплайна из CI/CD системы.
 
+![image](https://github.com/user-attachments/assets/7fd00d02-ab1d-46d1-8d89-49f13570ff3c)
+
+
 Ожидаемый результат:
 1. Git репозиторий с конфигурационными файлами для настройки Kubernetes.
+
+[Устанвка мониторинга и подготовка NS](https://github.com/Dmitrywh1/k8s-prepare)
+
 2. Http доступ к web интерфейсу grafana.
+
+![image](https://github.com/user-attachments/assets/33d1a45f-c986-4f31-908a-571ed105c951)
+
+
 3. Дашборды в grafana отображающие состояние Kubernetes кластера.
+
+![image](https://github.com/user-attachments/assets/a33bc527-403e-45ff-8e03-cd5a352e3ad3)
+
+
 4. Http доступ к тестовому приложению.
+
+![image](https://github.com/user-attachments/assets/be3451d5-7cf8-4fae-a089-eb3e09ba5639)
+
 
 ---
 ### Установка и настройка CI/CD
@@ -141,8 +169,20 @@
 Ожидаемый результат:
 
 1. Интерфейс ci/cd сервиса доступен по http.
+
+![image](https://github.com/user-attachments/assets/76db556e-3dc4-4c84-8248-d79f59d92e0c)
+
+
 2. При любом коммите в репозиторие с тестовым приложением происходит сборка и отправка в регистр Docker образа.
+
+![image](https://github.com/user-attachments/assets/c1e2088b-77b8-4f3f-b73c-c3c3ed6b8bb6)
+
+
 3. При создании тега (например, v1.0.0) происходит сборка и отправка с соответствующим label в регистри, а также деплой соответствующего Docker образа в кластер Kubernetes.
+
+   ![image](https://github.com/user-attachments/assets/1f6e9ae1-db4e-4853-ac63-19921c0bc566)
+
+[.gitlab-ci.yml](https://github.com/Dmitrywh1/samplefe/blob/c22907c72ee4c0f0c5036eb0510468ebbfba8c94/.gitlab-ci.yml)
 
 ---
 ## Что необходимо для сдачи задания?
