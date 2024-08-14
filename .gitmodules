@@ -1,0 +1,3 @@
+[submodule "samplefe"]
+	path = samplefe
+	url = https://github.com/Dmitrywh1/samplefe.git
