@@ -217,6 +217,7 @@ kubeconfig вытягивается отдельной ci-джобой и сох
 1. Репозиторий с конфигурационными файлами Terraform и готовность продемонстрировать создание всех ресурсов с нуля.
 
 [infrastructure](https://github.com/Dmitrywh1/infrastructure/tree/main)
+
 2. Пример pull request с комментариями созданными atlantis'ом или снимки экрана из Terraform Cloud или вашего CI-CD-terraform pipeline.
 
 ![image](https://github.com/user-attachments/assets/df60132b-b7ae-43d8-bdab-5559b39ac691)
@@ -224,12 +225,15 @@ kubeconfig вытягивается отдельной ci-джобой и сох
 3. Репозиторий с конфигурацией ansible, если был выбран способ создания Kubernetes кластера при помощи ansible.
 
 [Установка через ci джобу](https://github.com/Dmitrywh1/infrastructure/blob/main/kubernetes/.install-kubespray.gitlab-ci.yml)
+
 4. Репозиторий с Dockerfile тестового приложения и ссылка на собранный docker image.
 
 [samplefe](https://github.com/Dmitrywh1/samplefe)
+
 5. Репозиторий с конфигурацией Kubernetes кластера.
 
 [k8s](https://github.com/Dmitrywh1/infrastructure/tree/main/kubernetes)
+
 6. Ссылка на тестовое приложение и веб интерфейс Grafana с данными доступа.
 7. Все репозитории рекомендуется хранить на одном ресурсе (github, gitlab)
 
