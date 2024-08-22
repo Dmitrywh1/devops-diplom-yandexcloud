@@ -11,6 +11,7 @@
 
 **Перед началом работы над дипломным заданием изучите [Инструкция по экономии облачных ресурсов](https://github.com/netology-code/devops-materials/blob/master/cloudwork.MD).**
 
+
 ---
 ## Цели:
 
@@ -41,11 +42,11 @@
    а. Рекомендуемый вариант: S3 bucket в созданном ЯО аккаунте(создание бакета через TF)
    б. Альтернативный вариант:  [Terraform Cloud](https://app.terraform.io/)  
 
-[Создание бакета и регистри](https://github.com/Dmitrywh1/terraform/tree/718d0a96177bab54aa155473b7110ee7d4b7d483/bucket)
+[Создание бакета и регистри](https://github.com/Dmitrywh1/infrastructure/tree/main/bucket)
 
 3. Создайте VPC с подсетями в разных зонах доступности.
 
-[Создание VPC](https://github.com/Dmitrywh1/terraform/tree/718d0a96177bab54aa155473b7110ee7d4b7d483/vpc)
+[Создание VPC](https://github.com/Dmitrywh1/infrastructure/tree/main/compute_instance)
 
 4. Убедитесь, что теперь вы можете выполнить команды `terraform destroy` и `terraform apply` без дополнительных ручных действий.
 
@@ -75,13 +76,6 @@
    б. Подготовить [ansible](https://www.ansible.com/) конфигурации, можно воспользоваться, например [Kubespray](https://kubernetes.io/docs/setup/production-environment/tools/kubespray/)  
    в. Задеплоить Kubernetes на подготовленные ранее инстансы, в случае нехватки каких-либо ресурсов вы всегда можете создать их при помощи Terraform.
 
-[Kubespray](https://github.com/Dmitrywh1/kubespray/tree/3105a3f65f0b05be9fd94ce04799aebc1da417be)
-
-[.gitlab-ci.yml](https://github.com/Dmitrywh1/kubespray/blob/main/.gitlab-ci.yml)
-
-![image](https://github.com/user-attachments/assets/b9831705-6ba3-424a-986f-2e322a98133d)
-
-
 2. Альтернативный вариант: воспользуйтесь сервисом [Yandex Managed Service for Kubernetes](https://cloud.yandex.ru/services/managed-kubernetes)  
   а. С помощью terraform resource для [kubernetes](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/kubernetes_cluster) создать **региональный** мастер kubernetes с размещением нод в разных 3 подсетях      
   б. С помощью terraform resource для [kubernetes node group](https://registry.terraform.io/providers/yandex-cloud/yandex/latest/docs/resources/kubernetes_node_group)
@@ -89,9 +83,39 @@
 Ожидаемый результат:
 
 1. Работоспособный Kubernetes кластер.
+[Манифесты k8s](https://github.com/Dmitrywh1/infrastructure/tree/main/kubernetes)
+
+```
+Манифесты, отличающиеся от нативного kubespray:
+ - ../k8s-cluster/addons.yml: добавлена установка helm и ingress-nginx
+ - ../group_vars/kube_ingress.yml: taints и tolerations для ingress-нод
+ - ../manifests/*: манифесты для конфигурирования NS и создания Ingress для Grafana
+```
+
 2. В файле `~/.kube/config` находятся данные для доступа к кластеру.
+[scrape kubeconfig](https://github.com/Dmitrywh1/infrastructure/blob/main/kubernetes/.install-kubespray.gitlab-ci.yml)
+
+```
+kubeconfig вытягивается отдельной ci-джобой и сохраняется в артифактах для дальнейшего переиспользования
+```
+
 3. Команда `kubectl get pods --all-namespaces` отрабатывает без ошибок.
-   ![image](https://github.com/user-attachments/assets/cdf01edc-e770-49a6-89b7-476e1995ce17)
+
+![image](https://github.com/user-attachments/assets/09d126ff-cdd4-484f-9632-1ed9ee9ed61c)
+
+Описание созданного кластера:
+[Конфигурировать количество нод каждой группы можно в ci джобе](https://github.com/Dmitrywh1/infrastructure/blob/main/compute_instance/.compute_instance.gitlab-ci.yml)
+
+![image](https://github.com/user-attachments/assets/6ba0e498-18ed-4c1b-b65f-a4e651dbdc1f)
+
+
+```
+Сетевая доступность к кластеру реализована при помощи LB(L4), запросы принимает Ingress-worker node, далее роутится на воркер ноды.
+Сетевая доступность из кластера реализована при помощи nat_gateway от YC
+
+```
+
+![image](https://github.com/user-attachments/assets/36e24a34-8d6e-45ab-9db8-5c486fe87fff)
 
 
 ---
@@ -137,9 +161,12 @@
 Ожидаемый результат:
 1. Git репозиторий с конфигурационными файлами для настройки Kubernetes.
 
-[Устанвка мониторинга и подготовка NS](https://github.com/Dmitrywh1/k8s-prepare)
+ [Установка мониторинга](https://github.com/Dmitrywh1/infrastructure/blob/main/kubernetes/.prepare-k8s-.gitlab-ci.yml)
 
-2. Http доступ к web интерфейсу grafana.
+![image](https://github.com/user-attachments/assets/1fa47f9e-1b56-426a-88e8-10a63dd5502a)
+
+
+3. Http доступ к web интерфейсу grafana.
 
 ![image](https://github.com/user-attachments/assets/33d1a45f-c986-4f31-908a-571ed105c951)
 
@@ -188,10 +215,21 @@
 ## Что необходимо для сдачи задания?
 
 1. Репозиторий с конфигурационными файлами Terraform и готовность продемонстрировать создание всех ресурсов с нуля.
+
+[infrastructure](https://github.com/Dmitrywh1/infrastructure/tree/main)
 2. Пример pull request с комментариями созданными atlantis'ом или снимки экрана из Terraform Cloud или вашего CI-CD-terraform pipeline.
+
+![image](https://github.com/user-attachments/assets/df60132b-b7ae-43d8-bdab-5559b39ac691)
+
 3. Репозиторий с конфигурацией ansible, если был выбран способ создания Kubernetes кластера при помощи ansible.
+
+[Установка через ci джобу](https://github.com/Dmitrywh1/infrastructure/blob/main/kubernetes/.install-kubespray.gitlab-ci.yml)
 4. Репозиторий с Dockerfile тестового приложения и ссылка на собранный docker image.
+
+[samplefe](https://github.com/Dmitrywh1/samplefe)
 5. Репозиторий с конфигурацией Kubernetes кластера.
+
+[k8s](https://github.com/Dmitrywh1/infrastructure/tree/main/kubernetes)
 6. Ссылка на тестовое приложение и веб интерфейс Grafana с данными доступа.
 7. Все репозитории рекомендуется хранить на одном ресурсе (github, gitlab)
 
