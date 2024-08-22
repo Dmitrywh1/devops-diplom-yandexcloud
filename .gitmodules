@@ -10,3 +10,6 @@
 [submodule "terraform"]
 	path = terraform
 	url = https://github.com/Dmitrywh1/terraform.git
+[submodule "infrastructure"]
+	path = infrastructure
+	url = https://github.com/Dmitrywh1/infrastructure
