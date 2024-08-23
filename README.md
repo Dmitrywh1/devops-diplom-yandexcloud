@@ -117,6 +117,9 @@ kubeconfig вытягивается отдельной ci-джобой и сох
 
 ![image](https://github.com/user-attachments/assets/36e24a34-8d6e-45ab-9db8-5c486fe87fff)
 
+![image](https://github.com/user-attachments/assets/faafacc1-dca7-4e7e-a9be-a8d49369e0b2)
+
+
 
 ---
 ### Создание тестового приложения
